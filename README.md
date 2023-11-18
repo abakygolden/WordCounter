@@ -18,6 +18,8 @@ Below you can see the drawings of the analysis for this solution
 
 ----
 ### Decisions taken 
+- If amount of words in exclude file is different from 10, program will throw an exception.
+- When reaching a maximum amount of words program would stop , this is to avoid getting to places where the input is too large. This can be expanded to a certain amount without problem but to very large amounts might imply changes in the code.
 - Any word not being starting with the 27 letters of english alphabet will be ignored
 - Any exception that causes the program to stop will clear the output files, as corrupted data might be worse than no data.
 - Words consisting of special characters as "back-end" would be separated into their sub-parts ("back" and "end")
