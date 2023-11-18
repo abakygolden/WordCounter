@@ -10,7 +10,7 @@ In each of them the logic of grouping the words happens.
 
 Below you can see the drawings of the analysis for this solution 
 ## Main Flow
-![img.png](docs/main:flow.png)
+![img.png](docs/main_flow.png)
 ## Fail Reader Functionality 
 ![img.png](docs/file_reader.png)
 ## File Writer Functionality 
