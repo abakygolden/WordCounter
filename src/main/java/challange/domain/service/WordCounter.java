@@ -5,7 +5,6 @@ import challange.domain.exception.FileWriterIOException;
 import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 import static challange.domain.Helper.printMap;
@@ -41,7 +40,7 @@ public class WordCounter {
             System.out.println("ExcludeMap");
             printMap(excludeMap);
             fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, excludeMap);
-            fileWriterService.writeWordsToFile(OUTPUT_LOCATION+"file_", wordMap);
+            fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
 
         } catch (FileReaderIOException e) {
             System.out.println("Error occurred while reading file. Program stopping");

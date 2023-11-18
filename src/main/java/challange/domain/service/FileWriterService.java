@@ -1,19 +1,12 @@
 package challange.domain.service;
 
-import challange.domain.exception.FileReaderIOException;
 import challange.domain.exception.FileWriterIOException;
-import challange.domain.exception.MaxAmountOfWordsException;
-import challange.domain.exception.MinAmountOfWordsException;
 import lombok.NoArgsConstructor;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
-
-import static challange.domain.Helper.splitIntoWords;
 
 @NoArgsConstructor
 public class FileWriterService {
