@@ -1,6 +1,8 @@
 package challange.domain.exception;
 
-public class FileReaderIOException extends Exception {
+import java.io.IOException;
+
+public class FileReaderIOException extends IOException {
     public FileReaderIOException(String message) {
         super(message);
     }
