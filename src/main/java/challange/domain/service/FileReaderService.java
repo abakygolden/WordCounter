@@ -6,7 +6,6 @@ import challange.domain.exception.MinAmountOfWordsException;
 import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -15,11 +14,13 @@ import static challange.domain.Helper.splitIntoWords;
 
 @NoArgsConstructor
 public class FileReaderService {
+    private final int MAX_AMOUNT_WORDS = 10000;
+    //TODO UNIT TEST THIS
 
     public TreeMap<String, Long> createExcludeMap(String fileLocation) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
         TreeMap<String, Long> excludeMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         try {
-            readInitialExcludeFile(fileLocation, excludeMap);
+            readFile(fileLocation, excludeMap, 0, null);
         } catch (IOException e) {
             throw new FileReaderIOException("IO Exception while reading file " + e.getMessage());
         }
@@ -29,18 +30,57 @@ public class FileReaderService {
             throw new MinAmountOfWordsException("Exclude list is smaller than 10");
         }
         return excludeMap;
-}
+    }
 
-    private void readInitialExcludeFile(String fileLocation, Map<String, Long> excludeMap) throws IOException {
+    public TreeMap<String, Long> createWordMap(String fileLocation, TreeMap<String, Long> excludeMap, TreeMap<String, Long> wordMap) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
+        wordMap = wordMap == null ? new TreeMap<>(String.CASE_INSENSITIVE_ORDER) : wordMap; //If map not there, intialize it
+        try {
+            readFile(fileLocation, excludeMap, MAX_AMOUNT_WORDS, wordMap);
+        } catch (IOException e) {
+            throw new FileReaderIOException("IO Exception while reading file " + e.getMessage());
+        }
+        return wordMap;
+    }
+
+    private void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileLocation))) {
             String line;
+            int count = 0;
             while ((line = reader.readLine()) != null) {
                 String[] words = splitIntoWords(line); // splitting line into words
+                count += words.length; // Add length to count
                 for (String word : words) {
                     String uppercaseWord = word.toUpperCase();
-                    excludeMap.put(uppercaseWord, 0L);
+                    if (wordMap == null) {// If no wordMap provided, means we are on Initial Exclude File Reading
+                        putIntoInitialExcludeMap(excludeMap, uppercaseWord);
+                    } else { // Else we are in normal input reading
+                        if (count > maxAmountWords) {
+                            throw new MaxAmountOfWordsException(String.format("Amount of words  %s  larger than the limit of %s ", count, maxAmountWords));
+                        } else {
+                            putIntoWordMap(wordMap, excludeMap, uppercaseWord);
+                        }
+
+                    }
                 }
             }
         }
     }
+
+    private void putIntoWordMap(Map<String, Long> wordMap, Map<String, Long> excludeMap, String uppercaseWord) {
+        if (excludeMap.containsKey(uppercaseWord)) { // If it's an exlusion, add a count to it
+            putIntoMapAndIncreaseValue(excludeMap, uppercaseWord);
+        } else { //If not added to the WordMap
+            putIntoMapAndIncreaseValue(wordMap, uppercaseWord);
+        }
+    }
+
+    private void putIntoMapAndIncreaseValue(Map<String, Long> map, String key) {
+        map.put(key, map.getOrDefault(key, 0L) + 1);
+    }
+
+    private void putIntoInitialExcludeMap(Map<String, Long> excludeMap, String uppercaseWord) {
+        excludeMap.put(uppercaseWord, 0L);
+    }
+
+
 }
