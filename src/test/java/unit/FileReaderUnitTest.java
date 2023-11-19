@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(classes = Main.class)
-@ExtendWith(SpringExtension.class)
 
 public class FileReaderUnitTest {
     private final String FILE_LOCATION = "src/test/resources/unit/input/";

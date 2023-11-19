@@ -4,29 +4,36 @@ import challange.domain.exception.FileReaderIOException;
 import challange.domain.exception.FileWriterIOException;
 import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.TreeMap;
 
 import static challange.domain.Helper.getEnglishAlphabet;
-import static challange.domain.Helper.printMap;
 
 @Service
 public class WordCounterService {
+    public final int AMOUNT_OF_INPUT_FILES = 4;
     private final FileReaderService fileReaderService;
     private final FileWriterService fileWriterService;
 
-    public static final String SRC_MAIN_RESOURCES = "src/main/resources/";
-
-    private final String INPUT_LOCATION = SRC_MAIN_RESOURCES + "input/";
-    private final String OUTPUT_LOCATION = SRC_MAIN_RESOURCES + "output/";
-
-    private final String EXCLUDE_INPUT_LOCATION = INPUT_LOCATION + "exclude.txt";
-    private final String EXCLUDE_OUTPUT_LOCATION = OUTPUT_LOCATION + "exclude_count.txt";
+    public final String FILES_PATH, INPUT_LOCATION, OUTPUT_LOCATION, EXCLUDE_INPUT_LOCATION, EXCLUDE_OUTPUT_LOCATION;
 
 
+    public WordCounterService(String filesPath) {
+        FILES_PATH = filesPath;
+        INPUT_LOCATION = FILES_PATH + "input/";
+        OUTPUT_LOCATION = FILES_PATH + "output/";
+        EXCLUDE_INPUT_LOCATION = INPUT_LOCATION + "exclude.txt";
+        EXCLUDE_OUTPUT_LOCATION = OUTPUT_LOCATION + "exclude_count.txt";
+        this.fileReaderService = new FileReaderService();
+        this.fileWriterService = new FileWriterService();
+    }
     public WordCounterService() {
+        FILES_PATH = "src/main/resources/";
+        INPUT_LOCATION = FILES_PATH + "input/";
+        OUTPUT_LOCATION = FILES_PATH + "output/";
+        EXCLUDE_INPUT_LOCATION = INPUT_LOCATION + "exclude.txt";
+        EXCLUDE_OUTPUT_LOCATION = OUTPUT_LOCATION + "exclude_count.txt";
         this.fileReaderService = new FileReaderService();
         this.fileWriterService = new FileWriterService();
     }
@@ -35,13 +42,9 @@ public class WordCounterService {
         try {
             TreeMap<String, Long> excludeMap = fileReaderService.createExcludeMap(EXCLUDE_INPUT_LOCATION);
             TreeMap<String, Long> wordMap = null;
-            for (int i = 1; i <= 4; i++) {
+            for (int i = 1; i <= AMOUNT_OF_INPUT_FILES; i++) {
                 wordMap = fileReaderService.createWordMap(returnInputFileLocation(i), excludeMap, wordMap);
             }
-            System.out.println("WordMap");
-            printMap(wordMap);
-            System.out.println("ExcludeMap");
-            printMap(excludeMap);
             fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, excludeMap);
             fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
 

@@ -1,0 +1,183 @@
+Apple
+Banana
+Orange
+Mango
+Pineapple
+Watermelon
+Grape
+Strawberry
+Blueberry
+Raspberry
+Blackberry
+Kiwi
+Lemon
+Lime
+Cherry
+Peach
+Plum
+Pear
+Avocado
+Coconut
+Papaya
+Passion Fruit
+Pomegranate
+Grapefruit
+Cantaloupe
+Honeydew
+Fig
+Date
+Guava
+Nectarine
+Apricot
+Cranberry
+Elderberry
+Boysenberry
+Kiwifruit
+Tangerine
+Clementine
+Pomelo
+Persimmon
+Starfruit
+Lychee
+Dragon Fruit
+Jackfruit
+Blackcurrant
+Gooseberry
+Mulberry
+Plantain
+Olive
+Mango
+Passionfruit
+Pawpaw
+Soursop
+Breadfruit
+Rambutan
+Longan
+Ackee
+Jabuticaba
+Sapote
+Ugli Fruit
+Kumquat
+Loquat
+Cloudberry
+Lingonberry
+Boysenberry
+Loganberry
+Feijoa
+Currant
+Salak
+Horned Melon
+Persimmon
+Breadnut
+Buddha's Hand
+Prickly Pear
+Saguaro
+Sugar Apple
+Kei Apple
+Chayote
+Cactus Pear
+Buddha's Hand
+Custard Apple
+Miracle Fruit
+Jabuticaba
+Finger Lime
+Pizza
+Pasta
+Salad
+Burger
+Sushi
+Tacos
+Fried Chicken
+Steak
+Shrimp Scampi
+Chicken Alfredo
+Lasagna
+Risotto
+Pad Thai
+Macaroni and Cheese
+Grilled Cheese Sandwich
+Hot Dog
+Chicken Noodle Soup
+Clam Chowder
+Caesar Salad
+Burrito
+Gyro
+Ramen
+Fried Rice
+Baked Ziti
+Chicken Parmesan
+Lobster Bisque
+Chili
+Quesadilla
+Meatball Sub
+BBQ Ribs
+Fish and Chips
+Chicken Wings
+Caesar Wrap
+Quiche
+Calzone
+Falafel
+Spring Rolls
+Roast Beef Sandwich
+Cobb Salad
+Fajitas
+Omelette
+Chicken Pot Pie
+Tuna Salad
+Eggplant Parmesan
+Chicken Caesar Wrap
+Tandoori Chicken
+Corned Beef and Cabbage
+Chicken Satay
+French Onion Soup
+Lobster Roll
+Pulled Pork Sandwich
+Caprese Salad
+Chicken Tenders
+Sloppy Joe
+Stuffed Peppers
+Pho
+Ceviche
+Paella
+Croissant
+Bruschetta
+Empanadas
+Nachos
+Chicken Quesadilla
+Ratatouille
+Stuffed Mushrooms
+Shrimp Po' Boy
+Chicken Fajita Wrap
+Avocado Toast
+Falafel Wrap
+Chicken Teriyaki
+Baked Salmon
+Gumbo
+Crab Cakes
+Caesar Pizza
+Egg Rolls
+Chicken Shawarma
+Stuffed Shells
+Chicken Marsala
+Fettuccine Alfredo
+Tomato Soup
+Chicken Fried Rice
+Buffalo Chicken Wrap
+Philly Cheesesteak
+Pesto Pasta
+Tofu Stir Fry
+Chicken Gyro
+Baked Chicken
+Beef Stir Fry
+Tiramisu
+Cannoli
+Cheesecake
+Chocolate Mousse
+Apple Pie
+Key Lime Pie
+Baklava
+Pineapple Upside-Down Cake
+Blueberry Pancakes
+Strawberry Shortcake
+Chocolate Fondue
+S'mores

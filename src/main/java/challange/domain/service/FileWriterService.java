@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -42,7 +45,9 @@ public class FileWriterService {
             }
             tmpString.append(word.getKey()).append(" ").append(word.getValue()).append("\n");
 
-        }
+        } // Make sure last one is added too
+        removeLastTwoCharacters(tmpString);
+        writeWordsToTxtFileGivenLastCharacter(filePreDirectory, tmpString.toString(), currentChar);
     }
 
 
@@ -55,8 +60,13 @@ public class FileWriterService {
         }
     }
 
-    private void writeFile(String fileName, String content) throws IOException {
-        try (FileWriter writer = new FileWriter(fileName)) {
+    public void writeFile(String filePath, String content) throws IOException {
+        Path path = Paths.get(filePath);
+        if (!Files.exists(path)) {
+            throw new FileWriterIOException(String.format("Path specified (%s) does not correspond to a file", filePath));
+        }
+
+        try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(content);
         }
     }

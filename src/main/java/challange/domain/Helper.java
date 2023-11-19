@@ -19,7 +19,8 @@ public class Helper {
     }
 
     public static void removeLastTwoCharacters(StringBuilder stringBuilder) {
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+        //\n counts as one character so needed to fix this after test :)
+        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
     }
 
     public static void clearStringBuilder(StringBuilder stringBuilder) {
