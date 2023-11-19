@@ -39,16 +39,12 @@ public class FileReaderService {
         } catch (IOException e) {
             throw new FileReaderIOException("IO Exception while reading file " + e.getMessage());
         }
-        if (excludeMap.size() < 10) {
-            throw new MinAmountOfWordsException("Exclude list is smaller than 10");
-        } else if (excludeMap.size() > 10) {
-            throw new MaxAmountOfWordsException("Exclude list is larger than 10");
-        }
+
         return wordMap;
     }
 
     //Change to public pga af test
-    private void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException {
+    private void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException, MinAmountOfWordsException {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileLocation))) {
             String line;
             int count = 0;
@@ -69,6 +65,11 @@ public class FileReaderService {
                     }
                 }
             }
+        }
+        if (excludeMap.size() < 10) {
+            throw new MinAmountOfWordsException("Exclude list is smaller than 10");
+        } else if (excludeMap.size() > 10) {
+            throw new MaxAmountOfWordsException("Exclude list is larger than 10");
         }
     }
 
