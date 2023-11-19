@@ -1,13 +1,18 @@
 package integration;
 
+import challange.Main;
 import challange.domain.Helper;
 import challange.domain.service.WordCounterService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@SpringBootTest
+@SpringBootTest(classes = Main.class)
+@ExtendWith(SpringExtension.class)
 public class WordCounterIntegrationTest {
 
     @Autowired
@@ -35,23 +41,32 @@ public class WordCounterIntegrationTest {
     }
 
     @Test
-    public void testWordCounterService_WhenCorrectFilePath_Success() {
+    public void testWordCounterService_WhenCorrectFilePath_Success() throws IOException {
         assertDoesNotThrow(() -> {
             wordCounterService.countWords();
         });
-        assertEquals();
+        assertEquals(Files.readString(getExcludeCountPath(true)), Files.readString(getExcludeCountPath(false)));
+        ArrayList<Path> expected = getAllFilesPath(true);
+        ArrayList<Path> actual = getAllFilesPath(false);
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+        }
+
     }
 
 
-    public ArrayList<Path> getAllFilesPath() {
+    public ArrayList<Path> getAllFilesPath(boolean expected) {
+        String expectedPath = expected ? "expected/" : "";
+
         ArrayList<Path> paths = new ArrayList<>();
         Helper.getEnglishAlphabet().forEach(character -> {
-            paths.add(Paths.get(FILES_PATH + "file_" + character + ".txt"));
+            paths.add(Paths.get(FILES_PATH + "output/" + expectedPath + "file_" + character + ".txt"));
         });
         return paths;
     }
 
-    public Path getExcludeCountPath() {
-        return Paths.get(FILES_PATH + "exclude_count.txt");
+    public Path getExcludeCountPath(boolean expected) {
+        String expectedPath = expected ? "expected/" : "";
+        return Paths.get(FILES_PATH + "output/" + expectedPath + "exclude_count.txt");
     }
 }
