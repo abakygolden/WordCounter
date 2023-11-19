@@ -7,7 +7,6 @@ import challange.domain.exception.MinAmountOfWordsException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -18,7 +17,7 @@ public class WordCounterService {
     public final int AMOUNT_OF_INPUT_FILES = 4;
     private final FileReaderService fileReaderService;
     private final FileWriterService fileWriterService;
-
+    private final Object lock = new Object();
     public final String FILES_PATH, INPUT_LOCATION, OUTPUT_LOCATION, EXCLUDE_INPUT_LOCATION, EXCLUDE_OUTPUT_LOCATION;
 
 
@@ -31,6 +30,7 @@ public class WordCounterService {
         this.fileReaderService = new FileReaderService();
         this.fileWriterService = new FileWriterService();
     }
+
     public WordCounterService() {
         FILES_PATH = "src/main/resources/";
         INPUT_LOCATION = FILES_PATH + "input/";
@@ -48,10 +48,10 @@ public class WordCounterService {
             for (int i = 1; i <= AMOUNT_OF_INPUT_FILES; i++) {
                 wordMap = fileReaderService.createWordMap(returnInputFileLocation(i), excludeMap, wordMap);
             }
-            fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, excludeMap);
-
-            fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
-
+            synchronized (lock) {
+                fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, excludeMap);
+                fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
+            }
         } catch (FileReaderIOException e) {
             System.out.println("Error occurred while reading file. Program stopping");
         } catch (MaxAmountOfWordsException | MinAmountOfWordsException e) {
@@ -59,7 +59,9 @@ public class WordCounterService {
         } catch (FileWriterIOException e) {
             System.out.println(e.getMessage());
             System.out.println("All output files will be cleared");
-            cleanOutputFiles();
+            synchronized (lock) {
+                cleanOutputFiles();
+            }
         }
 
     }
