@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static challange.domain.Helper.clearStringBuilder;
@@ -19,7 +20,7 @@ import static challange.domain.Helper.removeLastTwoCharacters;
 @Service
 public class FileWriterService {
 
-    public void writeExcludeCount(String fileName, Map<String, Long> excludeMap) throws FileWriterIOException {
+    public void writeExcludeCount(String fileName, SortedMap<String, Long> excludeMap) throws FileWriterIOException {
         try {
             if (excludeMap == null) writeFile(fileName, "");
             else {
@@ -31,7 +32,7 @@ public class FileWriterService {
         }
     }
 
-    public void writeWordsToFile(String filePreDirectory, TreeMap<String, Long> wordMap) throws FileWriterIOException {
+    public void writeWordsToFile(String filePreDirectory, SortedMap<String, Long> wordMap) throws FileWriterIOException {
         if (wordMap == null) return;
         char currentChar = wordMap.firstEntry().getKey().charAt(0);
         StringBuilder tmpString = new StringBuilder();

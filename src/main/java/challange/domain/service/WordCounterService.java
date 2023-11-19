@@ -6,6 +6,9 @@ import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static challange.domain.Helper.getEnglishAlphabet;
@@ -40,12 +43,13 @@ public class WordCounterService {
 
     public void countWords() {
         try {
-            TreeMap<String, Long> excludeMap = fileReaderService.createExcludeMap(EXCLUDE_INPUT_LOCATION);
-            TreeMap<String, Long> wordMap = null;
+            SortedMap<String, Long> excludeMap = fileReaderService.createExcludeMap(EXCLUDE_INPUT_LOCATION);
+            SortedMap<String, Long> wordMap = Collections.synchronizedSortedMap(new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
             for (int i = 1; i <= AMOUNT_OF_INPUT_FILES; i++) {
                 wordMap = fileReaderService.createWordMap(returnInputFileLocation(i), excludeMap, wordMap);
             }
             fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, excludeMap);
+
             fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
 
         } catch (FileReaderIOException e) {

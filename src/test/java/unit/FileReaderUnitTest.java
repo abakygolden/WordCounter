@@ -7,11 +7,10 @@ import challange.domain.exception.MinAmountOfWordsException;
 import challange.domain.service.FileReaderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +22,7 @@ public class FileReaderUnitTest {
     private final String FILE_LOCATION = "src/test/resources/unit/input/";
     private final String NO_EXCEPTION_ERROR_MESSAGE = "It did not throw an exception something went wrong";
 
-    private TreeMap<String, Long> excludeMap = getExcludeMap();
+    private SortedMap<String, Long> excludeMap = getExcludeMap();
     @Autowired
     private FileReaderService fileReaderService;
 
@@ -71,7 +70,7 @@ public class FileReaderUnitTest {
 
     @Test
     public void testCreateWordMap_lessThan10EntriesExcludeMap_throwsMinAmountOfWordsException() {
-        TreeMap<String, Long> map = getEmptyMap();
+        SortedMap<String, Long> map = getEmptyMap();
         map.put("A", 1L);
         assertThrows(MinAmountOfWordsException.class, () -> {
             fileReaderService.createWordMap(generateFileLocation("valid_file"), map, getEmptyMap());
@@ -80,7 +79,7 @@ public class FileReaderUnitTest {
 
     @Test
     public void testCreateWordMap_moreThan10EntriesExcludeMap_throwsMaxAmountOfWordsException() {
-        TreeMap<String, Long> map = getExcludeMap();
+        SortedMap<String, Long> map = getExcludeMap();
         map.put("ZZZ", 1L);
         assertThrows(MaxAmountOfWordsException.class, () -> {
             fileReaderService.createWordMap(generateFileLocation("valid_file"), map, getEmptyMap());
@@ -92,7 +91,7 @@ public class FileReaderUnitTest {
         //Valid file is made of 200 different words
         // Three words : Long, One and You are part of exclude file
         // So end result map should have 197 entries each with value 1 and exclude Map should increase value of these entries
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("valid_file"), excludeMap, null);
 
         assertFalse(map.isEmpty(), "Map should read something , but it was empty");
@@ -106,7 +105,7 @@ public class FileReaderUnitTest {
     @Test
     public void testCreateWordMap_emptyWordMap_worksProperly() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
         //Valid file is made of 200 different, with 3 of them in exclude file, so final result should be 197  entries each with value 1
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("valid_file"), excludeMap, getEmptyMap());
         assertFalse(map.isEmpty(), "Map should read something , but it was empty");
         assertEquals(197, map.size(), String.format("Map should contain 197 entries but it had only %s", map.size()));
@@ -116,7 +115,7 @@ public class FileReaderUnitTest {
 
     @Test
     public void testCreateWordMap_alreadyProcessedMap_worksProperly() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("valid_file"), excludeMap, null);
         map = fileReaderService.createWordMap(generateFileLocation("valid_file"), excludeMap, map);
         assertFalse(map.isEmpty(), "Map should read something , but it was empty");
@@ -130,21 +129,21 @@ public class FileReaderUnitTest {
 
     @Test
     public void testCreateWordMap_fileWordsAllStartWithNonEnglishChar_wordMapEmpty() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("japanese"), excludeMap, null);
         assertTrue(map.isEmpty(), "Map should be empty");
     }
 
     @Test
     public void testCreateWordMap_nullMapEmptyFile_worksProperly() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("empty_file"), excludeMap, null);
         assertTrue(map.isEmpty(), "Map should be empty");
     }
 
     @Test
     public void testCreateWordMap_fileWordsAllBelongToExcludeMap_wordMapEmpty() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> map =
+        SortedMap<String, Long> map =
                 fileReaderService.createWordMap(generateFileLocation("all_words_excluded"), excludeMap, null);
         assertTrue(map.isEmpty(), "Map should be empty");
     }
@@ -161,7 +160,7 @@ public class FileReaderUnitTest {
     // Create Exclude Map
     @Test
     public void testCreateExcludeMap_correctFile_fillsEmptyExcludeMap() throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> tmpExcludeMap = fileReaderService.createExcludeMap(generateFileLocation("exclude"));
+        SortedMap<String, Long> tmpExcludeMap = fileReaderService.createExcludeMap(generateFileLocation("exclude"));
         assertFalse(tmpExcludeMap.isEmpty(), "Exclude Map should contain 10 entries but it was empty");
         assertEquals(10, tmpExcludeMap.size(), String.format("Exclude map should contain 10 entries but it had only %s", tmpExcludeMap.size()));
         tmpExcludeMap.forEach((key, value) -> assertEquals(0, value, String.format("Value should be 0 but it was  %s", value)));

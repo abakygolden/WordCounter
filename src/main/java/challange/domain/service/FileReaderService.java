@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static challange.domain.Helper.splitIntoWords;
@@ -19,8 +21,8 @@ import static challange.domain.Helper.splitIntoWords;
 public class FileReaderService {
     private final int MAX_AMOUNT_WORDS = 10000;
 
-    public TreeMap<String, Long> createExcludeMap(String fileLocation) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
-        TreeMap<String, Long> excludeMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    public SortedMap<String, Long> createExcludeMap(String fileLocation) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
+        SortedMap<String, Long> excludeMap = Collections.synchronizedSortedMap(new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
         try {
             readFile(fileLocation, excludeMap, 0, null);
         } catch (IOException e) {
@@ -29,11 +31,11 @@ public class FileReaderService {
         return excludeMap;
     }
 
-    public TreeMap<String, Long> createWordMap(String fileLocation, TreeMap<String, Long> excludeMap, TreeMap<String, Long> wordMap) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
+    public SortedMap<String, Long> createWordMap(String fileLocation, SortedMap<String, Long> excludeMap, SortedMap<String, Long> wordMap) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
         if (excludeMap == null) {
             throw new MinAmountOfWordsException("No words on exclude list");
         }
-        wordMap = wordMap == null ? new TreeMap<>(String.CASE_INSENSITIVE_ORDER) : wordMap; //If map not there, intialize it
+        wordMap = wordMap == null ? Collections.synchronizedSortedMap(new TreeMap<>(String.CASE_INSENSITIVE_ORDER)) : wordMap; //If map not there, intialize it
         try {
             readFile(fileLocation, excludeMap, MAX_AMOUNT_WORDS, wordMap);
         } catch (IOException e) {
@@ -44,7 +46,7 @@ public class FileReaderService {
     }
 
     //Change to public pga af test
-    private void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException, MinAmountOfWordsException {
+    private void readFile(String fileLocation, SortedMap<String, Long> excludeMap, int maxAmountWords, SortedMap<String, Long> wordMap) throws IOException, MaxAmountOfWordsException, MinAmountOfWordsException {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileLocation))) {
             String line;
             int count = 0;
