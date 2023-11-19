@@ -4,6 +4,7 @@ import challange.domain.exception.FileReaderIOException;
 import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,9 +15,9 @@ import java.util.TreeMap;
 import static challange.domain.Helper.splitIntoWords;
 
 @NoArgsConstructor
+@Service
 public class FileReaderService {
     private final int MAX_AMOUNT_WORDS = 10000;
-    //TODO UNIT TEST THIS
 
     public TreeMap<String, Long> createExcludeMap(String fileLocation) throws FileReaderIOException, MinAmountOfWordsException, MaxAmountOfWordsException {
         TreeMap<String, Long> excludeMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -43,7 +44,8 @@ public class FileReaderService {
         return wordMap;
     }
 
-    private void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException {
+    //Change to public pga af test
+    public void readFile(String fileLocation, Map<String, Long> excludeMap, int maxAmountWords, Map<String, Long> wordMap) throws IOException, MaxAmountOfWordsException {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileLocation))) {
             String line;
             int count = 0;

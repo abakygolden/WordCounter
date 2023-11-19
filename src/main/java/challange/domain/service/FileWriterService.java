@@ -2,6 +2,7 @@ package challange.domain.service;
 
 import challange.domain.exception.FileWriterIOException;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import static challange.domain.Helper.clearStringBuilder;
 import static challange.domain.Helper.removeLastTwoCharacters;
 
 @NoArgsConstructor
+@Service
 public class FileWriterService {
 
     public void writeExcludeCount(String fileName, Map<String, Long> excludeMap) throws FileWriterIOException {

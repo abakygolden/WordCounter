@@ -4,13 +4,16 @@ import challange.domain.exception.FileReaderIOException;
 import challange.domain.exception.FileWriterIOException;
 import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.TreeMap;
 
 import static challange.domain.Helper.getEnglishAlphabet;
 import static challange.domain.Helper.printMap;
 
-public class WordCounter {
+@Service
+public class WordCounterService {
     private final FileReaderService fileReaderService;
     private final FileWriterService fileWriterService;
 
@@ -23,10 +26,9 @@ public class WordCounter {
     private final String EXCLUDE_OUTPUT_LOCATION = OUTPUT_LOCATION + "exclude_count.txt";
 
 
-    public WordCounter() {
+    public WordCounterService() {
         this.fileReaderService = new FileReaderService();
         this.fileWriterService = new FileWriterService();
-
     }
 
     public void countWords() {
