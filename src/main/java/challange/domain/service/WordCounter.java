@@ -7,6 +7,7 @@ import challange.domain.exception.MinAmountOfWordsException;
 
 import java.util.TreeMap;
 
+import static challange.domain.Helper.getEnglishAlphabet;
 import static challange.domain.Helper.printMap;
 
 public class WordCounter {
@@ -48,8 +49,25 @@ public class WordCounter {
             System.out.println("An error occurred " + e.getMessage());
         } catch (FileWriterIOException e) {
             System.out.println(e.getMessage());
+            System.out.println("All output files will be cleared");
+            cleanOutputFiles();
         }
 
+    }
+
+    private void cleanOutputFiles() {
+        try {
+            fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, null);
+            getEnglishAlphabet().forEach(character -> {
+                try {
+                    fileWriterService.writeWordsToTxtFileGivenLastCharacter(OUTPUT_LOCATION + "file_", "", character);
+                } catch (FileWriterIOException e) {
+                    System.out.print("An error occurred while clearing output files.\n" + e.getMessage());
+                }
+            });
+        } catch (FileWriterIOException e) {
+            System.out.print("An error occurred while clearing output files.\n" + e.getMessage());
+        }
     }
 
     private String returnInputFileLocation(int number) {
