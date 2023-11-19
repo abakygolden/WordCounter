@@ -60,7 +60,7 @@ public class WordCounterService {
 
     }
 
-    private void cleanOutputFiles() {
+    public void cleanOutputFiles() {
         try {
             fileWriterService.writeExcludeCount(EXCLUDE_OUTPUT_LOCATION, null);
             getEnglishAlphabet().forEach(character -> {
