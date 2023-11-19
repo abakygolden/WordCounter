@@ -17,8 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(classes = Main.class)
@@ -45,13 +44,37 @@ public class WordCounterIntegrationTest {
         assertDoesNotThrow(() -> {
             wordCounterService.countWords();
         });
-        assertEquals(Files.readString(getExcludeCountPath(true)), Files.readString(getExcludeCountPath(false)));
+        assertExpectedFilesWithActual(true);
+
+    }
+
+    @Test
+    public void testWordCounterService_WhenWrongPath_NothingSaved() throws IOException {
+        //In this case application will fail and nothing will happen , therefore output files shall be clean
+        wordCounterService = new WordCounterService("Somethingwrong");
+        assertDoesNotThrow(() -> {
+            wordCounterService.countWords();
+        });
+        assertExpectedFilesWithActual(false);
+    }
+
+    private void assertExpectedFilesWithActual(boolean equals) throws IOException {
+        String excludePathExpectedResult = Files.readString(getExcludeCountPath(true));
+        String excludePathActualResult = Files.readString(getExcludeCountPath(false));
+        if (equals) {
+            assertEquals(excludePathExpectedResult,excludePathActualResult);
+        } else {
+            assertNotEquals(excludePathExpectedResult,excludePathActualResult);
+        }
         ArrayList<Path> expected = getAllFilesPath(true);
         ArrayList<Path> actual = getAllFilesPath(false);
         for (int i = 0; i < expected.size(); i++) {
-            assertEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+            if (equals) {
+                assertEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+            } else {
+                assertNotEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+            }
         }
-
     }
 
 
@@ -69,4 +92,5 @@ public class WordCounterIntegrationTest {
         String expectedPath = expected ? "expected/" : "";
         return Paths.get(FILES_PATH + "output/" + expectedPath + "exclude_count.txt");
     }
+
 }
