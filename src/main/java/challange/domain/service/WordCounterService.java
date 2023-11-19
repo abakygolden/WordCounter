@@ -4,6 +4,7 @@ import challange.domain.exception.FileReaderIOException;
 import challange.domain.exception.FileWriterIOException;
 import challange.domain.exception.MaxAmountOfWordsException;
 import challange.domain.exception.MinAmountOfWordsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.TreeMap;
 import static challange.domain.Helper.getEnglishAlphabet;
 
 @Service
+@Slf4j
 public class WordCounterService {
     public final int AMOUNT_OF_INPUT_FILES = 4;
     private final FileReaderService fileReaderService;
@@ -53,12 +55,12 @@ public class WordCounterService {
                 fileWriterService.writeWordsToFile(OUTPUT_LOCATION + "file_", wordMap);
             }
         } catch (FileReaderIOException e) {
-            System.out.println("Error occurred while reading file. Program stopping");
+            log.error("Error occurred while reading file. Program stopping");
         } catch (MaxAmountOfWordsException | MinAmountOfWordsException e) {
-            System.out.println("An error occurred " + e.getMessage());
+            log.error("An error occurred " + e.getMessage());
         } catch (FileWriterIOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("All output files will be cleared");
+            log.error("An error occurred " + e.getMessage());
+            log.info("All output files will be cleared");
             synchronized (lock) {
                 cleanOutputFiles();
             }
@@ -73,11 +75,11 @@ public class WordCounterService {
                 try {
                     fileWriterService.writeWordsToTxtFileGivenLastCharacter(OUTPUT_LOCATION + "file_", "", character);
                 } catch (FileWriterIOException e) {
-                    System.out.print("An error occurred while clearing output files.\n" + e.getMessage());
+                    log.error("An error occurred while clearing output files.\n" + e.getMessage());
                 }
             });
         } catch (FileWriterIOException e) {
-            System.out.print("An error occurred while clearing output files.\n" + e.getMessage());
+            log.error("An error occurred while clearing output files.\n" + e.getMessage());
         }
     }
 
