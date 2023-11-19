@@ -59,20 +59,23 @@ public class WordCounterIntegrationTest {
     }
 
     private void assertExpectedFilesWithActual(boolean equals) throws IOException {
-        String excludePathExpectedResult = Files.readString(getExcludeCountPath(true));
-        String excludePathActualResult = Files.readString(getExcludeCountPath(false));
+        String excludeCountExpectedResult = Files.readString(getExcludeCountPath(true));
+        String excludeCountActualResult = Files.readString(getExcludeCountPath(false));
         if (equals) {
-            assertEquals(excludePathExpectedResult,excludePathActualResult);
+            assertEquals(excludeCountExpectedResult, excludeCountActualResult,String.format("%s and %s should be the same", excludeCountExpectedResult, excludeCountActualResult));
         } else {
-            assertNotEquals(excludePathExpectedResult,excludePathActualResult);
+            assertNotEquals(excludeCountExpectedResult, excludeCountActualResult, String.format("%s and %s should be different", excludeCountExpectedResult, excludeCountActualResult));
         }
         ArrayList<Path> expected = getAllFilesPath(true);
         ArrayList<Path> actual = getAllFilesPath(false);
         for (int i = 0; i < expected.size(); i++) {
+            String expectedResult = Files.readString(expected.get(i));
+            String actualResult = Files.readString(actual.get(i));
+
             if (equals) {
-                assertEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+                assertEquals(expectedResult, actualResult,String.format("%s and %s should be the same", expectedResult, actualResult));
             } else {
-                assertNotEquals(Files.readString(expected.get(i)), Files.readString(actual.get(i)));
+                assertEquals("", actualResult,("Actual Result should be empty "));
             }
         }
     }
